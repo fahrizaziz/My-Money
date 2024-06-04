@@ -1,5 +1,7 @@
 import 'package:d_view/d_view.dart';
 import 'package:flutter/material.dart';
+import 'package:mymoney/Model/Utils/strings.dart';
+import 'package:mymoney/Model/inoutcome_model.dart';
 import 'package:mymoney/ViewModel/history_providers.dart';
 import 'package:provider/provider.dart';
 
@@ -29,11 +31,23 @@ class _InOutComeScreensState extends State<InOutComeScreens> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: CustomColor.primary,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(
+            Icons.arrow_back,
+          ),
+        ),
         titleSpacing: 0,
         title: Row(
           children: [
             Text(
               widget.type,
+              style: const TextStyle(
+                color: Colors.white,
+              ),
             ),
             Expanded(
               child: Container(
@@ -75,10 +89,14 @@ class _InOutComeScreensState extends State<InOutComeScreens> {
                       horizontal: 16,
                     ),
                     hintText: '2022-06-01',
-                    hintStyle: const TextStyle(color: Colors.white),
+                    hintStyle: const TextStyle(
+                      color: Colors.white,
+                    ),
                   ),
                   textAlignVertical: TextAlignVertical.center,
-                  style: const TextStyle(color: Colors.white),
+                  style: const TextStyle(
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
@@ -94,6 +112,7 @@ class _InOutComeScreensState extends State<InOutComeScreens> {
               : ListView.builder(
                   scrollDirection: Axis.vertical,
                   controller: _scrollController,
+                  itemCount: value.history.length,
                   itemBuilder: (context, index) {
                     var history = value.history[index];
                     if (index < value.history.length) {
@@ -117,6 +136,44 @@ class _InOutComeScreensState extends State<InOutComeScreens> {
                                 Format.date(
                                   history.date!,
                                 ),
+                                style: const TextStyle(
+                                  color: CustomColor.primary,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              Expanded(
+                                child: Text(
+                                  Format.currency(
+                                    history.total!,
+                                  ),
+                                  style: const TextStyle(
+                                    color: CustomColor.primary,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                  textAlign: TextAlign.end,
+                                ),
+                              ),
+                              PopupMenuButton(
+                                itemBuilder: (context) => [
+                                  PopupMenuItem(
+                                    value: 'update',
+                                    child: Text(
+                                      Strings.popUpdate,
+                                    ),
+                                  ),
+                                  PopupMenuItem(
+                                    value: 'delete',
+                                    child: Text(
+                                      Strings.popDelete,
+                                    ),
+                                  )
+                                ],
+                                onSelected: (value) => menuOption(
+                                  value,
+                                  history,
+                                ),
                               ),
                             ],
                           ),
@@ -130,5 +187,13 @@ class _InOutComeScreensState extends State<InOutComeScreens> {
         },
       ),
     );
+  }
+
+  menuOption(String value, InOutComeModel history) async {
+    if (value == 'update') {
+      print('Update');
+    } else if (value == 'delete') {
+      print('Delete');
+    }
   }
 }

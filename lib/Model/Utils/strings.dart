@@ -21,4 +21,8 @@ class Strings {
   static String pemasukan = 'Pemasukan';
   static String pengeluaran = 'Pengeluaran';
   static String riwayat = 'Riwayat';
+
+  // Popup Menu
+  static String popUpdate = 'Update';
+  static String popDelete = 'Delete';
 }
